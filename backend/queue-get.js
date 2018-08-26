@@ -1,7 +1,7 @@
 const https = require('https')
 
 exports.handler = (evt, ctx, cb) => {
-  if (typeof ctx.clientContext.user.email !== 'string') {
+  if (ctx.clientContext.user === undefined) {
     cb(null, {
       statusCode: 403,
     })

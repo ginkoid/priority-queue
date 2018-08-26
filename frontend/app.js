@@ -10,7 +10,7 @@
   const escapeHtml = str => str.replace(/[&"<>']/g, c => escapeReplaceDict.get(c))
 
   let accessToken = ''
-  const currentList = []
+  let currentList = []
   const renderCurrentList = () => {
     document.getElementById('r').innerHTML = currentList.map((item, idx) => {
       return `<li>
