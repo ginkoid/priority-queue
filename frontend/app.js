@@ -14,8 +14,8 @@
   const renderCurrentList = () => {
     document.getElementById('r').innerHTML = currentList.map((item, idx) => {
       return `<li>
-        <span>${excapeHtml(item.name)}</span>
-        <span><em>${excapeHtml(item.priority)}</em></span>
+        <span>${escapeHtml(item.name)}</span>
+        <span><em>${escapeHtml(item.priority)}</em></span>
         <span id="x${idx}"><strong>x</strong></span>
       </li>`
     }).join('')
@@ -41,7 +41,7 @@
     renderCurrentList()
   }
 
-  document.getElementById('f').addEventListener('submit', (evt) => {
+  document.getElementById('f').addEventListener('submit', async (evt) => {
     evt.preventDefault()
     await fetch('/.netlify/functions/queue-add', {
       method: 'POST',
@@ -57,7 +57,7 @@
     await fetchCurrentList()
   })
 
-  const handleUserLogin = (user) => {
+  const handleUserLogin = async (user) => {
     if (user === null) {
       return
     }
