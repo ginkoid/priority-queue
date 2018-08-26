@@ -67,6 +67,11 @@
     await fetchCurrentList()
   }
 
-  netlifyIdentity.on('init', handleUserLogin)
   netlifyIdentity.on('login', handleUserLogin)
+  netlifyIdentity.on('logout', () => {
+    currentList = []
+    renderCurrentList()
+    document.getElementById('r').hidden = true
+    document.getElementById('f').hidden = true
+  })
 })()

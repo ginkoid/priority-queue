@@ -7,29 +7,34 @@ exports.handler = (evt, ctx, cb) => {
     })
     return
   }
-  const res = https.request({
+  const req = https.request({
     host: 'api.github.com',
     port: 443,
     path: `/gists/${process.env.GIST_ID}`,
-    method: 'GET',
+    headers: {
+      'user-agent': 'ginkoid/priority-queue',
+    }
   })
-  const resBufs = []
-  res.on('data', (chunk) => {
-    resBufs.push(chunk)
-  })
-  res.on('end', () => {
-    const reqResult = JSON.parse(Buffer.concat(resBufs))
-    cb(null, {
-      statusCode: 200,
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: reqResult.files.pq.content,
+  req.on('response', (res) => {
+    const resBufs = []
+    res.on('data', (chunk) => {
+      resBufs.push(chunk)
+    })
+    res.on('end', () => {
+      const reqResult = JSON.parse(Buffer.concat(resBufs))
+      cb(null, {
+        statusCode: 200,
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: reqResult.files.pq.content,
+      })
     })
   })
-  res.on('error', () => {
+  req.on('error', () => {
     cb(null, {
       statusCode: 500,
     })
   })
+  req.end()
 }
