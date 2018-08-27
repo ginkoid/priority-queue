@@ -64,7 +64,7 @@
     }
     document.getElementById('r').hidden = false
     document.getElementById('f').hidden = false
-    accessToken = user.token.access_token
+    accessToken = await user.jwt()
     await fetchCurrentList()
   }
 
