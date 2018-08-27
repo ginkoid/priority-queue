@@ -14,6 +14,7 @@
 
   const markDirty = () => {
     document.getElementById('s').hidden = false
+    renderCurrentQueue()
   }
 
   const renderCurrentQueue = () => {
