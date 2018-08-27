@@ -6,7 +6,13 @@ A super simple priority queue web app
 
 When you deploy to Netlify, make sure to turn off open registration, because anyone who can log in to the app can read and update the queue. You can then manually invite people.
 
-The queue is stored in a GitHub gist, which is configured in environment variables.
+The queue is stored in a GitHub gist, which is configured in environment variables. Before running the app, you need to create this gist. It should have a single file called `pq`, which should initially should have the content:
+
+```json
+[]
+```
+
+The environment variables are:
 
 * `GIST_ID`: The GitHub gist ID where the queue is stored
 * `GH_SECRET`: GitHub secret with edit access to `GIST_ID`
