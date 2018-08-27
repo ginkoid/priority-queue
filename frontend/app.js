@@ -60,6 +60,8 @@
       name: document.getElementById('n').value,
       priority: parseFloat(document.getElementById('p').value),
     })
+    document.getElementById('n').value = ''
+    document.getElementById('p').value = ''
     currentQueue.sort((a, b) => b.priority - a.priority)
     markDirty()
   })
