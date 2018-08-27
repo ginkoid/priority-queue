@@ -14,8 +14,8 @@
   const renderCurrentList = () => {
     document.getElementById('r').innerHTML = currentQueue.map((item, idx) => {
       return `<li>
-        <span>name: ${escapeHtml(item.name)}</span>
-        <span>priority: <em>${escapeHtml(String(item.priority))}</em></span>
+        <span>${escapeHtml(item.name)}</span>
+        <span><em>${escapeHtml(String(item.priority))}</em></span>
         <span style="cursor:pointer;" id="x${idx}"><strong>x</strong></span>
       </li>`
     }).join('')
@@ -52,7 +52,7 @@
     evt.preventDefault()
     currentQueue.push({
       name: document.getElementById('n').value,
-      priority: document.getElementById('p').value,
+      priority: parseFloat(document.getElementById('p').value),
     })
     currentQueue.sort((a, b) => b.priority - a.priority)
     await updateCurrentList()
