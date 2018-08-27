@@ -21,7 +21,7 @@
     document.getElementById('r').innerHTML = currentQueue.map((item, idx) => {
       return `<li>
         <span>${escapeHtml(item.name)}</span>
-        <span><em>${escapeHtml(String(item.priority))}</em></span>
+        <span>| <em>${escapeHtml(String(item.priority))}</em></span>
         <span style="cursor:pointer;" id="x${idx}"><strong>x</strong></span>
       </li>`
     }).join('')

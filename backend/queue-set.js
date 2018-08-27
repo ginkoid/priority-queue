@@ -47,7 +47,7 @@ exports.handler = (evt, ctx, cb) => {
   req.on('response', (res) => {
     res.on('end', () => {
       cb(null, {
-        statusCode: 204,
+        statusCode: 200,
       })
     })
   })
