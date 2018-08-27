@@ -10,25 +10,25 @@
   const escapeHtml = str => str.replace(/[&"<>']/g, c => escapeHtmlReplace.get(c))
 
   let accessToken = ''
-  let currentList = []
+  let currentQueue = []
   const renderCurrentList = () => {
-    document.getElementById('r').innerHTML = currentList.map((item, idx) => {
+    document.getElementById('r').innerHTML = currentQueue.map((item, idx) => {
       return `<li>
-        <span>${escapeHtml(item.name)}</span>
-        <span><em>${escapeHtml(String(item.priority))}</em></span>
-        <span id="x${idx}"><strong>x</strong></span>
+        <span>name: ${escapeHtml(item.name)}</span>
+        <span>priority: <em>${escapeHtml(String(item.priority))}</em></span>
+        <span style="cursor:pointer;" id="x${idx}"><strong>x</strong></span>
       </li>`
     }).join('')
-    currentList.forEach((_, idx) => {
+    currentQueue.forEach((_, idx) => {
       document.getElementById(`x${idx}`).addEventListener('click', async () => {
-        currentList.splice(idx, 1)
+        currentQueue.splice(idx, 1)
         await updateCurrentList()
       })
     })
   }
 
   const fetchCurrentList = async () => {
-    currentList = await (await fetch('/.netlify/functions/queue-get', {
+    currentQueue = await (await fetch('/.netlify/functions/queue-get', {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
@@ -38,22 +38,23 @@
 
   const updateCurrentList = async () => {
     await fetch('/.netlify/functions/queue-set', {
+      method: 'PATCH',
       headers: {
         authorization: `Bearer ${accessToken}`,
         'content-type': 'application/json',
       },
-      body: JSON.stringify(currentList)
+      body: JSON.stringify(currentQueue)
     })
     await fetchCurrentList()
   }
 
   document.getElementById('f').addEventListener('submit', async (evt) => {
     evt.preventDefault()
-    currentList.push({
+    currentQueue.push({
       name: document.getElementById('n').value,
       priority: document.getElementById('p').value,
     })
-    currentList.sort((a, b) => b.priority - a.priority)
+    currentQueue.sort((a, b) => b.priority - a.priority)
     await updateCurrentList()
   })
 
@@ -69,7 +70,7 @@
 
   netlifyIdentity.on('login', handleUserLogin)
   netlifyIdentity.on('logout', () => {
-    currentList = []
+    currentQueue = []
     accessToken = ''
     renderCurrentList()
     document.getElementById('r').hidden = true

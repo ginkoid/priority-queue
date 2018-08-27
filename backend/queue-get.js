@@ -1,6 +1,12 @@
 const https = require('https')
 
 exports.handler = (evt, ctx, cb) => {
+  if (evt.httpMethod !== 'GET') {
+    cb(null, {
+      statusCode: 405,
+    })
+    return
+  }
   if (ctx.clientContext.user === undefined) {
     cb(null, {
       statusCode: 403,
@@ -13,7 +19,7 @@ exports.handler = (evt, ctx, cb) => {
     path: `/gists/${process.env.GIST_ID}`,
     headers: {
       'user-agent': 'ginkoid/priority-queue',
-    }
+    },
   })
   req.on('response', (res) => {
     const resBufs = []
