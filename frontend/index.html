@@ -1,14 +1,24 @@
 <!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 <title>priority queue</title>
+<style>
+  body {
+    background: #e8e8e8;
+    color: #333;
+    font-family: 'Helvetica Neue', Helvetica, 'Calibri Light', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0.02em;
+  }
+</style>
 <h1>priority queue</h1>
 <a data-netlify-identity-button></a>
 <ul hidden id="r">loading...</ul>
 <form hidden id="f">
   <span>name:</span>
-  <input id="n" type="text">
+  <input required id="n" type="text">
   <span>priority:</span>
-  <input id="p" type="number" min="0" max="1" step="0.01" style="width:50px;">
+  <input required id="p" type="number" min="0" max="1" step="0.01" style="width:50px;">
   <button type="submit">add</button>
 </form>
 <button hidden id="s" style="margin-top:30px;">save</button>
