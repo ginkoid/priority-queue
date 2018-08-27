@@ -11,7 +11,12 @@
 
   let accessToken = ''
   let currentQueue = []
-  const renderCurrentList = () => {
+
+  const markDirty = () => {
+    document.getElementById('s').hidden = false
+  }
+
+  const renderCurrentQueue = () => {
     document.getElementById('r').innerHTML = currentQueue.map((item, idx) => {
       return `<li>
         <span>${escapeHtml(item.name)}</span>
@@ -22,21 +27,21 @@
     currentQueue.forEach((_, idx) => {
       document.getElementById(`x${idx}`).addEventListener('click', async () => {
         currentQueue.splice(idx, 1)
-        await updateCurrentList()
+        markDirty()
       })
     })
   }
 
-  const fetchCurrentList = async () => {
+  const fetchCurrentQueue = async () => {
     currentQueue = await (await fetch('/.netlify/functions/queue-get', {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     })).json()
-    renderCurrentList()
+    renderCurrentQueue()
   }
 
-  const updateCurrentList = async () => {
+  document.getElementById('s').addEventListener('click', async () => {
     await fetch('/.netlify/functions/queue-set', {
       method: 'PATCH',
       headers: {
@@ -45,8 +50,8 @@
       },
       body: JSON.stringify(currentQueue)
     })
-    await fetchCurrentList()
-  }
+    document.getElementById('s').hidden = true
+  })
 
   document.getElementById('f').addEventListener('submit', async (evt) => {
     evt.preventDefault()
@@ -55,7 +60,7 @@
       priority: parseFloat(document.getElementById('p').value),
     })
     currentQueue.sort((a, b) => b.priority - a.priority)
-    await updateCurrentList()
+    markDirty()
   })
 
   const handleUserLogin = async (user) => {
@@ -65,14 +70,15 @@
     document.getElementById('r').hidden = false
     document.getElementById('f').hidden = false
     accessToken = await user.jwt()
-    await fetchCurrentList()
+    await fetchCurrentQueue()
   }
 
   netlifyIdentity.on('login', handleUserLogin)
   netlifyIdentity.on('logout', () => {
     currentQueue = []
     accessToken = ''
-    renderCurrentList()
+    renderCurrentQueue()
+    document.getElementById('s').hidden = true
     document.getElementById('r').hidden = true
     document.getElementById('f').hidden = true
   })
