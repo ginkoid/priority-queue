@@ -9,7 +9,6 @@
 
   const escapeHtml = str => str.replace(/[&"<>']/g, c => escapeHtmlReplace.get(c))
 
-  let accessToken = ''
   let currentQueue = []
 
   const markDirty = () => {
@@ -17,12 +16,22 @@
     renderCurrentQueue()
   }
 
+  const markFlying = () => {
+    document.getElementById('i').disabled = true
+    document.querySelectorAll('.x').forEach(el => el.disabled = true)
+  }
+
+  const markLanded = () => {
+    document.getElementById('i').disabled = false
+    document.querySelectorAll('.x').forEach(el => el.disabled = true)    
+  }
+
   const renderCurrentQueue = () => {
     document.getElementById('r').innerHTML = currentQueue.map((item, idx) => {
       return `<li>
         <span>${escapeHtml(item.name)}</span>
-        <span>| <em>${escapeHtml(String(item.priority))}</em></span>
-        <span style="cursor:pointer;" id="x${idx}"><strong>x</strong></span>
+        <span>| <em>${escapeHtml(String(item.priority))}</em> |</span>
+        <button class="x" id="x${idx}">x</button>
       </li>`
     }).join('')
     currentQueue.forEach((_, idx) => {
@@ -34,23 +43,27 @@
   }
 
   const fetchCurrentQueue = async () => {
+    markFlying()
     currentQueue = await (await fetch('/.netlify/functions/queue-get', {
       headers: {
-        authorization: `Bearer ${accessToken}`,
+        authorization: `Bearer ${await netlifyIdentity.currentUser().jwt()}`,
       },
     })).json()
+    markLanded()
     renderCurrentQueue()
   }
 
   document.getElementById('s').addEventListener('click', async () => {
+    markFlying()
     await fetch('/.netlify/functions/queue-set', {
       method: 'PATCH',
       headers: {
-        authorization: `Bearer ${accessToken}`,
+        authorization: `Bearer ${await netlifyIdentity.currentUser().jwt()}`,
         'content-type': 'application/json',
       },
       body: JSON.stringify(currentQueue)
     })
+    markLanded()
     document.getElementById('s').hidden = true
   })
 
@@ -72,14 +85,12 @@
     }
     document.getElementById('r').hidden = false
     document.getElementById('f').hidden = false
-    accessToken = await user.jwt()
     await fetchCurrentQueue()
   }
 
   netlifyIdentity.on('login', handleUserLogin)
   netlifyIdentity.on('logout', () => {
     currentQueue = []
-    accessToken = ''
     renderCurrentQueue()
     document.getElementById('s').hidden = true
     document.getElementById('r').hidden = true
