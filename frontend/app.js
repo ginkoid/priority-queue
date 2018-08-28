@@ -34,8 +34,7 @@ const markLanded = () => {
 
 const renderCurrentQueue = () => {
   document.getElementById('r').innerHTML = currentQueue.map((item, idx) => {
-    return
-`<tr>
+    return `<tr>
 <td>${escapeHtml(item.name)}</td>
 <td><em>${escapeHtml(String(item.priority))}</em></td>
 <td><button class="x" id="x${idx}">x</button></td>
