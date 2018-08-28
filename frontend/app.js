@@ -28,11 +28,11 @@
 
   const renderCurrentQueue = () => {
     document.getElementById('r').innerHTML = currentQueue.map((item, idx) => {
-      return `<li>
-        <span>${escapeHtml(item.name)}</span>
-        <span>| <em>${escapeHtml(String(item.priority))}</em> |</span>
-        <button class="x" id="x${idx}">x</button>
-      </li>`
+      return `<tr>
+        <td>${escapeHtml(item.name)}</td>
+        <td><em>${escapeHtml(String(item.priority))}</em></td>
+        <td><button class="x" id="x${idx}">x</button></td>
+      </tr>`
     }).join('')
     currentQueue.forEach((_, idx) => {
       document.getElementById(`x${idx}`).addEventListener('click', async () => {
