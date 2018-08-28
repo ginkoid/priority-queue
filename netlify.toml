@@ -1,6 +1,7 @@
 [build]
+  Command = "yarn build"
+  Publish = "build"
   Functions = "backend"
-  Publish = "frontend"
 [template.environment]
   GIST_ID = "Github gist ID where queue is stored"
   GH_SECRET = "GitHub secret with edit access to the gist ID"

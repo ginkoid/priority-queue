@@ -1,0 +1,23 @@
+{
+  "name": "priority-queue",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ginkoid/priority-queue",
+  "author": "Philip Papurt <ginkoid@gmail.com> (https://gnk.io)",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "node ./scripts/build.js && cp frontend/favicon.ico build && cp frontend/index.html build"
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0",
+    "babel-loader": "^8.0.0",
+    "babel-preset-env": "^2.0.0-beta.2",
+    "chalk": "^2.4.1",
+    "netlify-identity-widget": "^1.4.14",
+    "promise-polyfill": "^8.1.0",
+    "regenerator-runtime": "^0.12.1",
+    "unfetch": "^3.1.1",
+    "webpack": "^4.17.1"
+  }
+}
