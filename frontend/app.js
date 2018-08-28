@@ -3,8 +3,6 @@ import 'unfetch/polyfill'
 import 'regenerator-runtime/runtime'
 import netlifyIdentity from 'netlify-identity-widget'
 
-netlifyIdentity.init()
-
 const escapeHtmlReplace = new Map([
   ['&', '&#38;'],
   ['"', '&#34;'],
@@ -36,11 +34,12 @@ const markLanded = () => {
 
 const renderCurrentQueue = () => {
   document.getElementById('r').innerHTML = currentQueue.map((item, idx) => {
-    return `<tr>
-      <td>${escapeHtml(item.name)}</td>
-      <td><em>${escapeHtml(String(item.priority))}</em></td>
-      <td><button class="x" id="x${idx}">x</button></td>
-    </tr>`
+    return
+`<tr>
+<td>${escapeHtml(item.name)}</td>
+<td><em>${escapeHtml(String(item.priority))}</em></td>
+<td><button class="x" id="x${idx}">x</button></td>
+</tr>`
   }).join('')
   currentQueue.forEach((_, idx) => {
     document.getElementById(`x${idx}`).addEventListener('click', async () => {
@@ -104,3 +103,5 @@ netlifyIdentity.on('logout', () => {
   document.getElementById('r').hidden = true
   document.getElementById('f').hidden = true
 })
+
+netlifyIdentity.init()
