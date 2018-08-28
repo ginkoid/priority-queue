@@ -18,12 +18,14 @@
 
   const markFlying = () => {
     document.getElementById('i').disabled = true
+    document.getElementById('s').disabled = true
     document.querySelectorAll('.x').forEach(el => el.disabled = true)
   }
 
   const markLanded = () => {
     document.getElementById('i').disabled = false
-    document.querySelectorAll('.x').forEach(el => el.disabled = true)    
+    document.getElementById('s').disabled = false
+    document.querySelectorAll('.x').forEach(el => el.disabled = false)    
   }
 
   const renderCurrentQueue = () => {
